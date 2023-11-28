@@ -11,8 +11,9 @@ class BrowserContext{
     async init(){
         this.browser = await puppeteer.launch({
             userDataDir: './user_data',
-            headless: false,
-            defaultViewport: null
+            headless: true,
+            defaultViewport: null,
+            args: ['--no-sandbox']
         });
         this.page = await this.browser.newPage();
         await this.page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3312.0 Safari/537.36');
@@ -121,7 +122,7 @@ class BrowserContext{
             // await this.page.setViewport({width: 1440, height: 900, isLandscape: true});
             // console.log("Waiting for user to Scan")
             console.log("Sending QR for user to Scan")
-                
+            await sleep(2000)    
             // await sleep(40000);
             //If logged in then only save the cookies, localStorage, sessionStorage
             //else keep checking if the qr code changes and send the new QR code to the frontend

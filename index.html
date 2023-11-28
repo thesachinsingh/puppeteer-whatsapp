@@ -42,16 +42,16 @@
             </div>
             <div id="send-msg" class="flex w-full md:justify-start justify-center items-end">
                 <div class="relative mr-4 md:w-full lg:w-full xl:w-1/2 w-2/4">
-                    <form>
+                    <form id="form-1">
                         <label for="hero-field" class="leading-7 text-sm text-gray-400">To</label>
                         <input type="text" id="receiver" name="hero-field" class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-indigo-900 focus:bg-transparent focus:border-indigo-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
                         <label for="hero-field2" class="leading-7 text-sm text-gray-400">Message</label>
                         <textarea id="msg" name="hero-field2" class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-indigo-900 focus:bg-transparent focus:border-indigo-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></textarea>
                         <!-- <input type="text" id="msg" name="hero-field2" class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-indigo-900 focus:bg-transparent focus:border-indigo-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"> -->
-                        <button id="send" type="submit" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg" onclick="sendMessage()">Send Message</button>
+                        <button id="send" type="submit" class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Send Message</button>
                     </form>  
                     <br><br><p>OR</p><br> 
-                    <form>
+                    <form id="form-2">
                         <label for="msg-template" class="leading-7 text-sm text-gray-400">Message Template</label>
                         <textarea id="msg-template" name="msg-template" class="w-full bg-gray-800 rounded bg-opacity-40 border border-gray-700 focus:ring-2 focus:ring-indigo-900 focus:bg-transparent focus:border-indigo-500 text-base outline-none text-gray-100 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></textarea>
                         <br>
@@ -147,16 +147,22 @@
                 console.log(error)
             }
         }
-        async function sendMessage(){
+
+        async function sendMessage(e){
+            console.log(e)
+            e.preventDefault()
             const data = {
                 customerMobile: document.getElementById("receiver").value,
                 customMessage: document.getElementById("msg").value
             }
+            //console.log("Yo")
             document.getElementById('alert-content').innerText = 'Sending Message...'
             document.getElementById('successAlert').style.display = 'block';
             setTimeout(() => {
+                //console.log("Yo2")
                 document.getElementById('successAlert').style.display = 'none';
-            }, 3000);
+            }, 3000)
+            //console.log("Yo3")
             var send_btn = document.getElementById("send");
             send_btn.style.display = 'none'
             try{
@@ -167,11 +173,11 @@
                     },
                     body: JSON.stringify(data)
                 }).then(response => {
-                    document.getElementById('alert-content').innerText = 'Message Sent!'
+                    document.getElementById('alert-content').innerText = 'Message Sent!';
                     document.getElementById('successAlert').style.display = 'block';
                     setTimeout(() => {
                         document.getElementById('successAlert').style.display = 'none';
-                        send_btn.style.display = 'block'
+                        send_btn.style.display = 'block';
                     }, 3000);
                     return response.json();
                 })
@@ -181,6 +187,7 @@
                 console.log(error)
             }
         }
+        document.getElementById("form-1").addEventListener('submit', sendMessage)
 
         const CSVToArray = (data, delimiter = ',', omitFirstRow = false) => data
         .slice(omitFirstRow ? data.indexOf('\n') + 1 : 0)
@@ -305,7 +312,9 @@
                 // Update the QR code in the UI
                 if(data.isqr){
                     let qrImage = document.getElementById('qrImage');
+                    qrImage.style.display = 'block'
                     qrImage.src = data.qr;
+
                 }
                 // const msg_div = document.getElementById("send-msg");
                 // msg_div.style.display = 'none'
